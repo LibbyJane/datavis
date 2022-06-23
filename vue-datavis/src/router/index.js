@@ -1,20 +1,35 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/Home.vue' // these components will be pre-loaded rather than lazy loaded
 import FitnessTrackerView from '@/views/FitnessTracker.vue'
+import PieChartView from '@/views/PieChart.vue'
+import BarChartView from '@/views/BarChart.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      name: 'Home',
+      component: FitnessTrackerView,
     },
     {
       path: '/line',
       name: 'Fitness Tracker',
       component: FitnessTrackerView
       // component: () => import('../views/FitnessTracker.vue')
+    },
+    {
+      path: '/pie',
+      name: 'Pie chart',
+      component: PieChartView
+
+      //component: () => import('../views/PieChart.vue')
+    },
+    {
+      path: '/bar',
+      name: 'Bar chart',
+      component: BarChartView
+
+      //component: () => import('../views/BarChart.vue')
     }
   ]
 })

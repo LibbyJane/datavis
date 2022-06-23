@@ -1,0 +1,300 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SVG Basics</title>
+
+    <style>
+        :root {
+            --primary: #0C47DE;
+            --secondary: #FF7D5F;
+            --secondary-light: #FFBE4E;
+
+            --swimming: #0099DC;
+            --running: #FF398A;
+            --cycling: #00B482;
+            --walking: #CB26BC;
+            --white: #fff;
+            --off-white: #e8e8f1;
+            --black: #2A272A;
+            --text: #4B4A54;
+            --grey: #677381;
+        }
+
+        .swimming {
+            background-color: var(--swimming);
+            fill: var(--swimming);
+        }
+
+        .running {
+            background-color: var(--running);
+            fill: var(--running);
+        }
+
+        .walking {
+            background-color: var(--walking);
+            fill: var(--walking);
+        }
+
+        .cycling {
+            background-color: var(--cycling);
+            fill: var(--cycling);
+        }
+
+
+        .text-swimming,
+        [data-activity="swimming"] {
+            color: var(--swimming);
+        }
+
+        .text-running,
+        [data-activity="running"] {
+            color: var(--running);
+        }
+
+        .text-walking,
+        [data-activity="walking"] {
+            color: var(--walking);
+        }
+
+        .text-cycling,
+        [data-activity="cycling"] {
+            color: var(--cycling);
+        }
+
+        body {
+            background: var(--grey);
+            color: var(--text);
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 1.1rem;
+            ;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        section {
+            background: var(--white);
+            color: var(--text);
+            margin: 0 auto 1rem;
+            padding: 0;
+        }
+
+        button {
+            background: var(--off-white);
+            border: 0 none;
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 600;
+            padding: 0.5rem;
+            transition: all 300ms;
+        }
+
+        button[data-activity="swimming"] {
+            color: var(--swimming);
+        }
+
+        button[data-activity="running"] {
+            color: var(--running);
+        }
+
+        button[data-activity="cycling"] {
+            color: var(--cycling);
+        }
+
+        button[data-activity="walking"] {
+            color: var(--walking);
+        }
+
+        button.active[data-activity="swimming"],
+        button[data-activity="swimming"]:hover,
+        button[data-activity="swimming"]:focus {
+            background: var(--swimming);
+            color: var(--white);
+        }
+
+        button.active[data-activity="running"],
+        button[data-activity="running"]:hover,
+        button[data-activity="running"]:focus {
+            background: var(--running);
+            color: var(--white);
+        }
+
+        button.active[data-activity="cycling"],
+        button[data-activity="cycling"]:hover,
+        button[data-activity="cycling"]:focus {
+            background: var(--cycling);
+            color: var(--white);
+        }
+
+        button.active[data-activity="runwalkingning"],
+        button[data-activity="walking"]:hover,
+        button[data-activity="walking"]:focus {
+            background: var(--walking);
+            color: var(--white);
+        }
+
+        button[type="submit"] {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        button[type="submit"]:hover {
+            background: var(--secondary-light);
+        }
+
+        .active {
+            background: var(--primary);
+            color: var(--white) !important;
+        }
+
+        .fill-primary {
+            fill: var(--primary);
+        }
+
+        .cols {
+            display: flex;
+        }
+
+        .col {
+            flex: 0 0 auto;
+            margin: 1rem;
+        }
+
+        .is-activities {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .is-graph {
+            margin-left: auto;
+        }
+
+        .is-activities button {
+            display: block;
+            margin: 0 0 0.5rem;
+            padding: 0.5rem 1.5rem;
+        }
+
+        form fieldset {
+            border: 0;
+            padding-top: 1rem;
+        }
+
+        form em {
+            color: var(--primary);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        h6 {
+            font-size: 1.2rem;
+            margin: 0 0 1rem;
+            padding: 0;
+        }
+
+        p {
+            margin: 0 0 1rem;
+            padding: 0;
+        }
+
+        .x-axis path,
+        .y-axis path,
+        .x-axis line,
+        .y-axis line {
+            stroke: var(--text);
+        }
+
+        .x-axis text,
+        .y-axis text {
+            fill: var(--text);
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <section id="fitnessTracker">
+            <div class="cols">
+                <div class="col is-activities">
+                    <button class="active" data-activity="cycling">Cycling</button>
+                    <button data-activity="running">Running</button>
+                    <button data-activity="swimming">Swimming</button>
+                    <button data-activity="walking">Walking</button>
+                </div>
+
+                <form id="ftForm" class="col is-form">
+                    <h6>How much <em id="js-ft-type" data-activity="cycling">cycling</em> have you done
+                        today?</h6>
+                    <input class="js-ft-input" type="text" id="cycling" placeholder="Distance in km" />
+                    <p id="ftError"></p>
+                </form>
+
+                <div class="col is-graph">
+                    <div class="canvas js-linegraph-canvas"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="PAI">
+            <form id="PAIform">
+                <fieldset>
+                    <h6>Add PAI:</h6>
+                    <div class="input-field">
+                        <label for="date">Date</label>
+                        <input type="date" id="date">
+                    </div>
+                    <div class="input-field">
+                        <label for="value">PAI value</label>
+                        <input type="number" id="value">
+                    </div>
+                    <div class="input-field">
+                        <button type="submit">Add Item</button>
+                    </div>
+                    <div class="input-field">
+                        <p id="error" class="error"></p>
+                    </div>
+                </fieldset>
+            </form>
+            <div class="canvas js-barchart-canvas"></div>
+            <div class="canvas js-piechart-canvas"></div>
+        </section>
+
+    </main>
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAI29ZO5RVaVJp58JuK5eJ0cEH3tXS3NkE",
+            authDomain: "datavis-9a70d.firebaseapp.com",
+            projectId: "datavis-9a70d",
+            storageBucket: "datavis-9a70d.appspot.com",
+            messagingSenderId: "207756046877",
+            appId: "1:207756046877:web:a1049bed1390c670560cf4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        // Initialize Firebase
+        const db = firebase.firestore();
+        db.settings({ timestampsInSnapshots: true });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
+    <script src="https://unpkg.com/d3-v6-tip@1.0.6/build/d3-v6-tip.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bumbeishvili/d3-tip-for-v6@4/d3-tip.min.css">
+    <script src="js/index.js"></script>
+    <script src="js/line-graph.js"></script>
+    <script src="js/bar-chart.js"></script>
+    <script src="js/pie-chart.js"></script>
+
+</body>
+
+</html>

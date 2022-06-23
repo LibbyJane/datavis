@@ -1,0 +1,37 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SVG Basics</title>
+</head>
+
+<body>
+
+    <div class="canvas js-canvas"></div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAI29ZO5RVaVJp58JuK5eJ0cEH3tXS3NkE",
+            authDomain: "datavis-9a70d.firebaseapp.com",
+            projectId: "datavis-9a70d",
+            storageBucket: "datavis-9a70d.appspot.com",
+            messagingSenderId: "207756046877",
+            appId: "1:207756046877:web:a1049bed1390c670560cf4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        // Initialize Firebase
+        const db = firebase.firestore();
+        db.settings({ timestampsInSnapshots: true });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.js"></script> -->
+    <script src="js/index.js"></script>
+</body>
+
+</html>

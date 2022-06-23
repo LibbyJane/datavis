@@ -32,7 +32,7 @@
                                 have you done today?
                             </label>
                             <v-text-field
-                                id="distance"
+                                id="distanct"
                                 placeholder="0"
                                 hint="Distance in km"
                                 persistent-hint
@@ -102,12 +102,9 @@
         const svg = d3
             .select('#canvas')
             .append('svg')
-            .attr(
-                'viewBox',
-                `0 0 ${graphWidth + margin.left + margin.right} ${
-                    graphHeight + margin.top + margin.bottom
-                }`
-            );
+            .attr('width', graphWidth + margin.left + margin.right)
+            .attr('height', graphHeight + margin.top + margin.bottom);
+
         const graph = svg
             .append('g')
             .attr('width', graphWidth)
@@ -257,24 +254,28 @@
             update();
         });
 
+        // data array and firestore
         db.collection('fitnessTracker')
             .orderBy('date')
             .onSnapshot((res) => {
-                //console.log('res', res);
-                //console.log('data', data);
+                console.log('res', res);
+                console.log('data', data);
 
                 res.docChanges().forEach((change) => {
                     const doc = { ...change.doc.data(), id: change.doc.id };
 
                     switch (change.type) {
                         case 'added':
+                            //console.log('added');
                             data.value = data.push(doc);
                             break;
                         case 'modified':
+                            //console.log('modified');
                             const index = data.findIndex((item) => item.id == doc.id);
                             data[index] = doc;
                             break;
                         case 'removed':
+                            //console.log('removed');
                             data.value = data.filter((item) => item.id !== doc.id);
                             break;
                         default:
@@ -282,6 +283,7 @@
                     }
                 });
 
+                // call the update function
                 update();
             });
     });
